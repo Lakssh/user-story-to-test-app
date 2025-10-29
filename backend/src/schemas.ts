@@ -23,7 +23,27 @@ export const GenerateResponseSchema = z.object({
   completionTokens: z.number()
 })
 
+// Jira schemas
+export const JiraFetchRequestSchema = z.object({
+  storyKey: z.string().min(1, 'Story key is required'),
+  jiraUrl: z.string().optional(),
+  username: z.string().optional(),
+  apiToken: z.string().optional()
+})
+
+export const JiraStoryDetailsSchema = z.object({
+  key: z.string(),
+  title: z.string(),
+  description: z.string(),
+  acceptanceCriteria: z.string(),
+  status: z.string().optional(),
+  assignee: z.string().optional(),
+  storyPoints: z.number().optional()
+})
+
 // Type exports
 export type GenerateRequest = z.infer<typeof GenerateRequestSchema>
 export type TestCase = z.infer<typeof TestCaseSchema>
 export type GenerateResponse = z.infer<typeof GenerateResponseSchema>
+export type JiraFetchRequest = z.infer<typeof JiraFetchRequestSchema>
+export type JiraStoryDetails = z.infer<typeof JiraStoryDetailsSchema>
