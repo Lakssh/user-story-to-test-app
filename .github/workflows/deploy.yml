@@ -1,0 +1,60 @@
+name: Deploy Application
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create .env file from secrets
+        run: |
+          cat > .env << EOF
+          PORT="${{ secrets.PORT || '8080' }}"
+          CORS_ORIGIN="${{ secrets.CORS_ORIGIN || 'http://localhost:5173' }}"
+          groq_API_BASE="${{ secrets.GROQ_API_BASE || 'https://api.groq.com/openai/v1' }}"
+          groq_API_KEY="${{ secrets.GROQ_API_KEY }}"
+          groq_MODEL="${{ secrets.GROQ_MODEL || 'openai/gpt-oss-120b' }}"
+          
+          # Jira Configuration
+          JIRA_URL="${{ secrets.JIRA_URL }}"
+          JIRA_USERNAME="${{ secrets.JIRA_USERNAME }}"
+          JIRA_API_TOKEN="${{ secrets.JIRA_API_TOKEN }}"
+          JIRA_ACCEPTANCE_CRITERIA_FIELD="${{ secrets.JIRA_ACCEPTANCE_CRITERIA_FIELD || 'customfield_10000' }}"
+          JIRA_STORY_POINTS_FIELD="${{ secrets.JIRA_STORY_POINTS_FIELD || 'customfield_10002' }}"
+          EOF
+
+      - name: Build application
+        run: |
+          npm run build --workspace=backend
+          npm run build --workspace=frontend
+
+      - name: Run tests (if available)
+        run: npm test --if-present
+        continue-on-error: true
+
+      # Add your deployment steps here
+      # Examples:
+      # - Deploy to AWS, Azure, GCP
+      # - Deploy to Vercel, Netlify, Railway
+      # - Copy files to server via SSH
+      
+      - name: Display deployment info
+        run: |
+          echo "✅ Build completed successfully"
+          echo "📦 Ready for deployment"

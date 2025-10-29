@@ -1,0 +1,58 @@
+name: Generate .env from Secrets
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to generate .env for'
+        required: true
+        default: 'development'
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+
+jobs:
+  generate-env:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create .env file
+        run: |
+          cat > .env << EOF
+          PORT="${{ secrets.PORT || '8080' }}"
+          CORS_ORIGIN="${{ secrets.CORS_ORIGIN || 'http://localhost:5173' }}"
+          groq_API_BASE="${{ secrets.GROQ_API_BASE || 'https://api.groq.com/openai/v1' }}"
+          groq_API_KEY="${{ secrets.GROQ_API_KEY }}"
+          groq_MODEL="${{ secrets.GROQ_MODEL || 'openai/gpt-oss-120b' }}"
+          
+          # Jira Configuration
+          JIRA_URL="${{ secrets.JIRA_URL }}"
+          JIRA_USERNAME="${{ secrets.JIRA_USERNAME }}"
+          JIRA_API_TOKEN="${{ secrets.JIRA_API_TOKEN }}"
+          JIRA_ACCEPTANCE_CRITERIA_FIELD="${{ secrets.JIRA_ACCEPTANCE_CRITERIA_FIELD || 'customfield_10000' }}"
+          JIRA_STORY_POINTS_FIELD="${{ secrets.JIRA_STORY_POINTS_FIELD || 'customfield_10002' }}"
+          EOF
+
+      - name: Upload .env as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: env-file-${{ github.event.inputs.environment }}
+          path: .env
+          retention-days: 1
+
+      - name: Display instructions
+        run: |
+          echo "✅ .env file generated successfully"
+          echo ""
+          echo "📥 To download and use this file:"
+          echo "1. Go to the 'Actions' tab"
+          echo "2. Click on this workflow run"
+          echo "3. Download the 'env-file-${{ github.event.inputs.environment }}' artifact"
+          echo "4. Extract and place it in your project root"
+          echo ""
+          echo "⚠️  This artifact will be deleted after 1 day for security"

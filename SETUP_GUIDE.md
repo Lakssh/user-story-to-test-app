@@ -15,6 +15,8 @@
 
 ### 2. Configure Environment Variables
 
+#### Option A: Local Development (Quick Setup)
+
 1. Navigate to the project root:
    ```bash
    cd "/Volumes/Shana/Gen AI Learning/user-story-to-tests"
@@ -25,7 +27,58 @@
    JIRA_URL=https://your-company.atlassian.net
    JIRA_USERNAME=your.email@company.com
    JIRA_API_TOKEN=paste-your-token-here
+   groq_API_KEY=paste-your-groq-api-key-here
    ```
+
+#### Option B: GitHub Secrets (Recommended for Teams & CI/CD)
+
+For production deployments and team collaboration, store secrets in GitHub:
+
+1. **Navigate to GitHub Repository Settings:**
+   - Go to: `https://github.com/Lakssh/gen-ai-learning-homeworks/settings/secrets/actions`
+   - Or: Repository → Settings → Secrets and variables → Actions
+
+2. **Add Required Secrets** (Click "New repository secret" for each):
+   
+   | Secret Name | Description | Required |
+   |------------|-------------|----------|
+   | `GROQ_API_KEY` | Your Groq API Key | ✅ Yes |
+   | `JIRA_API_TOKEN` | Your Jira API Token | ✅ Yes |
+   | `JIRA_URL` | Your Jira URL (e.g., https://company.atlassian.net/) | ✅ Yes |
+   | `JIRA_USERNAME` | Your Jira Email | ✅ Yes |
+   | `PORT` | Backend server port | Optional (default: 8080) |
+   | `CORS_ORIGIN` | Frontend URL | Optional (default: http://localhost:5173) |
+   | `GROQ_API_BASE` | Groq API base URL | Optional (default: https://api.groq.com/openai/v1) |
+   | `GROQ_MODEL` | AI model to use | Optional (default: openai/gpt-oss-120b) |
+   | `JIRA_ACCEPTANCE_CRITERIA_FIELD` | Custom field ID | Optional (default: customfield_10000) |
+   | `JIRA_STORY_POINTS_FIELD` | Custom field ID | Optional (default: customfield_10002) |
+
+3. **Generate .env File from GitHub Secrets:**
+   
+   **Method 1: Using GitHub Actions Workflow**
+   - Go to repository **Actions** tab
+   - Select **"Generate .env from Secrets"** workflow
+   - Click **"Run workflow"**
+   - Choose environment (development/staging/production)
+   - Wait for completion
+   - Download the `.env` artifact from the workflow run
+   - Extract and place `.env` in project root
+
+   **Method 2: Automatic on Deploy**
+   - Push to main branch
+   - The `deploy.yml` workflow automatically creates `.env` from secrets
+   - Secrets are injected during CI/CD pipeline
+
+4. **Benefits of Using GitHub Secrets:**
+   - ✅ Secure storage - encrypted at rest
+   - ✅ Team collaboration - share repo without sharing secrets
+   - ✅ CI/CD ready - automatic injection in workflows
+   - ✅ No accidental commits - secrets never in code
+   - ✅ Easy rotation - update once, applies everywhere
+
+📚 **For detailed GitHub Secrets setup, see:**
+- Quick Start: [GITHUB_SECRETS_QUICKSTART.md](./GITHUB_SECRETS_QUICKSTART.md)
+- Full Documentation: [GITHUB_SECRETS_SETUP.md](./GITHUB_SECRETS_SETUP.md)
 
 ### 3. Find Your Custom Field IDs (Optional)
 
@@ -122,6 +175,27 @@ The UI should open at http://localhost:5173
 - The `.env.example` file is provided as a template
 - API tokens should be treated like passwords
 - Rotate tokens periodically for security
+- **For production/team environments, use GitHub Secrets** (see step 2, Option B)
+
+### Why Use GitHub Secrets?
+
+**Local .env file (Development only):**
+- ❌ Risk of accidental commits
+- ❌ Each team member needs manual setup
+- ❌ Difficult to rotate/update across team
+- ❌ Not secure for production
+
+**GitHub Secrets (Recommended):**
+- ✅ Encrypted and secure
+- ✅ Never exposed in code or logs
+- ✅ Automatic injection in CI/CD
+- ✅ Easy to update for entire team
+- ✅ Audit trail of changes
+- ✅ Works with deployment pipelines
+
+📚 **See GitHub Secrets documentation:**
+- [GITHUB_SECRETS_QUICKSTART.md](./GITHUB_SECRETS_QUICKSTART.md) - Quick setup guide
+- [GITHUB_SECRETS_SETUP.md](./GITHUB_SECRETS_SETUP.md) - Detailed documentation
 
 ## What Gets Fetched from Jira
 
