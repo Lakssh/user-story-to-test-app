@@ -7,16 +7,22 @@ interface GroqResponse {
   completionTokens: number
 }
 
+interface GroqOptions {
+  apiKey?: string
+  baseUrl?: string
+  model?: string
+}
+
 export class GroqClient {
   private apiKey: string
   private baseUrl: string
   private model: string
 
-  constructor() {
-    // Support both lowercase and uppercase env var names
-    this.apiKey = process.env.groq_API_KEY || process.env.GROQ_API_KEY || ''
-    this.baseUrl = process.env.groq_API_BASE || process.env.GROQ_API_BASE || 'https://api.groq.com/openai/v1'
-    this.model = process.env.groq_MODEL || process.env.GROQ_MODEL || 'llama3-8b-8192'
+  constructor(options?: GroqOptions) {
+    // Support both lowercase and uppercase env var names, allow overrides via options
+    this.apiKey = options?.apiKey || process.env.groq_API_KEY || process.env.GROQ_API_KEY || ''
+    this.baseUrl = options?.baseUrl || process.env.groq_API_BASE || process.env.GROQ_API_BASE || 'https://api.groq.com/openai/v1'
+    this.model = options?.model || process.env.groq_MODEL || process.env.GROQ_MODEL || 'llama3-8b-8192'
     
     if (!this.apiKey) {
       console.warn('groq_API_KEY not found in environment variables')

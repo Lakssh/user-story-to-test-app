@@ -53,6 +53,8 @@ export interface ConfigData {
   groq_API_BASE?: string
   groq_API_KEY?: string
   groq_MODEL?: string
+  // Client-side option: when true, send Groq credentials from browser to API
+  groqSendClientCredentials?: boolean
   JIRA_URL?: string
   JIRA_USERNAME?: string
   JIRA_API_TOKEN?: string

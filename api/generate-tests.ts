@@ -21,15 +21,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    // Early configuration checks for clearer errors (support both cases)
-    const groqKey = process.env.groq_API_KEY || process.env.GROQ_API_KEY
-    if (!groqKey) {
-      res.status(400).json({
-        error: 'Groq API key is not configured. Please set GROQ_API_KEY (or groq_API_KEY) environment variable.'
-      })
-      return
-    }
-
     // Validate request body
     const validationResult = GenerateRequestSchema.safeParse(req.body)
 
@@ -42,11 +33,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const request = validationResult.data
 
+    // Allow client to optionally supply Groq credentials (useful for demos); server env remains default
+    const clientGroqKey = (req.body as any)?.groq_API_KEY || (req.body as any)?.GROQ_API_KEY
+    const clientGroqBase = (req.body as any)?.groq_API_BASE || (req.body as any)?.GROQ_API_BASE
+    const clientGroqModel = (req.body as any)?.groq_MODEL || (req.body as any)?.GROQ_MODEL
+
+    // Effective config: prefer client-supplied when present, else env
+    const effectiveKey = clientGroqKey || process.env.groq_API_KEY || process.env.GROQ_API_KEY
+    const effectiveBase = clientGroqBase || process.env.groq_API_BASE || process.env.GROQ_API_BASE
+    const effectiveModel = clientGroqModel || process.env.groq_MODEL || process.env.GROQ_MODEL
+
+    if (!effectiveKey) {
+      res.status(400).json({
+        error: 'Groq API key is not configured. Set GROQ_API_KEY (or groq_API_KEY) in server env, or include groq_API_KEY in the request body when client-side override is enabled.'
+      })
+      return
+    }
+
     // Build prompts
     const userPrompt = buildPrompt(request)
 
     // Create GroqClient instance
-    const groqClient = new GroqClient()
+  const groqClient = new GroqClient({ apiKey: effectiveKey, baseUrl: effectiveBase, model: effectiveModel })
 
     // Generate tests using Groq
     try {

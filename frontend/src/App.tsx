@@ -162,7 +162,22 @@ function App() {
     setError(null)
     
     try {
-      const response = await generateTests(formData)
+      // Build request and include Groq creds if enabled
+      const requestBody: any = { ...formData }
+      try {
+        const saved = typeof window !== 'undefined' ? localStorage.getItem(CONFIG_STORAGE_KEY) : null
+        if (saved) {
+          const storedConfig = JSON.parse(saved)
+          const sendGroqCreds = storedConfig.groqSendClientCredentials !== false
+          if (sendGroqCreds) {
+            if (storedConfig.groq_API_KEY) requestBody.groq_API_KEY = storedConfig.groq_API_KEY
+            if (storedConfig.groq_API_BASE) requestBody.groq_API_BASE = storedConfig.groq_API_BASE
+            if (storedConfig.groq_MODEL) requestBody.groq_MODEL = storedConfig.groq_MODEL
+          }
+        }
+      } catch {}
+
+      const response = await generateTests(requestBody)
       setResults(response)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to generate tests')
@@ -183,12 +198,25 @@ function App() {
     setError(null)
     
     try {
-      const request: GenerateRequest = {
+      const request: any = {
         storyTitle: jiraFormData.title,
         acceptanceCriteria: jiraFormData.acceptanceCriteria,
         description: jiraFormData.description,
         additionalInfo: jiraFormData.additionalInfo
       }
+      // Include Groq creds if enabled
+      try {
+        const saved = typeof window !== 'undefined' ? localStorage.getItem(CONFIG_STORAGE_KEY) : null
+        if (saved) {
+          const storedConfig = JSON.parse(saved)
+          const sendGroqCreds = storedConfig.groqSendClientCredentials !== false
+          if (sendGroqCreds) {
+            if (storedConfig.groq_API_KEY) request.groq_API_KEY = storedConfig.groq_API_KEY
+            if (storedConfig.groq_API_BASE) request.groq_API_BASE = storedConfig.groq_API_BASE
+            if (storedConfig.groq_MODEL) request.groq_MODEL = storedConfig.groq_MODEL
+          }
+        }
+      } catch {}
       const response = await generateTests(request)
       setResults(response)
     } catch (err) {
@@ -534,6 +562,22 @@ function App() {
                       />
                       <small className="field-help">Specify the Groq model to use for test generation</small>
                     </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="groqSendClientCredentials">
+                      <input
+                        id="groqSendClientCredentials"
+                        type="checkbox"
+                        checked={configData.groqSendClientCredentials !== false}
+                        onChange={(e) => handleConfigChange('groqSendClientCredentials', e.target.checked)}
+                        style={{ marginRight: '8px' }}
+                      />
+                      Send Groq credentials from browser (override server env)
+                    </label>
+                    <small className="field-help">
+                      When enabled, your Groq API key, base URL, and model set above will be sent with the generate request. Disable to rely on server environment variables.
+                    </small>
                   </div>
                 </div>
 
