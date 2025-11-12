@@ -56,9 +56,13 @@ function App() {
     setError(null)
     setConfigSuccess(null)
     try {
-      // In serverless deployments, config is read-only and must be updated via Vercel
+      // In read-only deployments, open Vercel Env Vars page instead of erroring
       if (configData.readOnly) {
-        setError('This deployment manages configuration via Vercel Environment Variables. Please update them in Vercel → Project → Settings → Environment Variables and redeploy.')
+        if (typeof window !== 'undefined') {
+          window.open('https://vercel.com/dashboard', '_blank', 'noopener')
+        }
+        setConfigSuccess('Opening Vercel Environment Variables...')
+        setTimeout(() => setConfigSuccess(null), 2500)
         return
       }
       console.log('Saving config:', configData)
@@ -70,6 +74,29 @@ function App() {
       setError(err instanceof Error ? err.message : 'Failed to save configuration')
     } finally {
       setIsConfigLoading(false)
+    }
+  }
+
+  const copyEnvKeysToClipboard = async () => {
+    const keys = [
+      'CORS_ORIGIN',
+      'groq_API_BASE',
+      'groq_API_KEY',
+      'groq_MODEL',
+      'JIRA_URL',
+      'JIRA_USERNAME',
+      'JIRA_API_TOKEN',
+      'JIRA_ACCEPTANCE_CRITERIA_FIELD',
+      'JIRA_STORY_POINTS_FIELD',
+      'VITE_API_BASE_URL'
+    ]
+    const text = keys.join('\n')
+    try {
+      await navigator.clipboard.writeText(text)
+      setConfigSuccess('Environment variable keys copied to clipboard')
+      setTimeout(() => setConfigSuccess(null), 3000)
+    } catch (e) {
+      setError('Failed to copy keys to clipboard')
     }
   }
 
@@ -471,11 +498,6 @@ function App() {
         {activeTab === 'config' && (
           <div className="tab-content">
             <div className="config-container">
-              {configData.readOnly && (
-                <div className="error-banner" style={{marginBottom: '16px'}}>
-                  Configuration is managed via Vercel Environment Variables in this deployment. Changes here won't persist. Update values in Vercel → Project → Settings → Environment Variables, then redeploy.
-                </div>
-              )}
               <div className="config-two-column-layout">
                 {/* Left Column - Groq API Configuration */}
                 <div className="config-column config-column-left">
@@ -630,10 +652,29 @@ function App() {
                   type="button"
                   className="submit-btn"
                   onClick={handleSaveConfig}
-                  disabled={isConfigLoading || !!configData.readOnly}
+                  disabled={isConfigLoading}
                 >
-                  {configData.readOnly ? 'Managed by Vercel' : (isConfigLoading ? 'Saving...' : 'Save Configuration')}
+                  {isConfigLoading ? 'Saving...' : 'Save Configuration'}
                 </button>
+                {configData.readOnly && (
+                  <>
+                    <a
+                      className="clear-btn"
+                      href="https://vercel.com/dashboard"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Open Vercel Environment Variables
+                    </a>
+                    <button
+                      type="button"
+                      className="clear-btn"
+                      onClick={copyEnvKeysToClipboard}
+                    >
+                      Copy Env Keys
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>
