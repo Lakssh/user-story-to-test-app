@@ -565,19 +565,21 @@ function App() {
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label" htmlFor="groqSendClientCredentials">
-                      <input
-                        id="groqSendClientCredentials"
-                        type="checkbox"
-                        checked={configData.groqSendClientCredentials !== false}
-                        onChange={(e) => handleConfigChange('groqSendClientCredentials', e.target.checked)}
-                        style={{ marginRight: '8px' }}
-                      />
-                      Send Groq credentials from browser (override server env)
-                    </label>
-                    <small className="field-help">
-                      When enabled, your Groq API key, base URL, and model set above will be sent with the generate request. Disable to rely on server environment variables.
-                    </small>
+                    <label className="form-label">Client override</label>
+                    <div className="field-wrapper">
+                      <label className="checkbox-label" htmlFor="groqSendClientCredentials">
+                        <input
+                          id="groqSendClientCredentials"
+                          type="checkbox"
+                          checked={configData.groqSendClientCredentials !== false}
+                          onChange={(e) => handleConfigChange('groqSendClientCredentials', e.target.checked)}
+                        />
+                        <span>Send Groq credentials from browser (override server env)</span>
+                      </label>
+                      <small className="field-help">
+                        When enabled, your Groq API key, base URL, and model set above will be sent with the generate request. Disable to rely on server environment variables.
+                      </small>
+                    </div>
                   </div>
                 </div>
 
@@ -671,19 +673,21 @@ function App() {
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label" htmlFor="jiraSendClientCredentials">
-                      <input
-                        id="jiraSendClientCredentials"
-                        type="checkbox"
-                        checked={configData.jiraSendClientCredentials !== false}
-                        onChange={(e) => handleConfigChange('jiraSendClientCredentials', e.target.checked)}
-                        style={{ marginRight: '8px' }}
-                      />
-                      Send credentials from browser (override server env)
-                    </label>
-                    <small className="field-help">
-                      When enabled, your Jira URL, username, and API token from this page are sent with each Jira request. Disable to rely on server environment variables.
-                    </small>
+                    <label className="form-label">Client override</label>
+                    <div className="field-wrapper">
+                      <label className="checkbox-label" htmlFor="jiraSendClientCredentials">
+                        <input
+                          id="jiraSendClientCredentials"
+                          type="checkbox"
+                          checked={configData.jiraSendClientCredentials !== false}
+                          onChange={(e) => handleConfigChange('jiraSendClientCredentials', e.target.checked)}
+                        />
+                        <span>Send Jira credentials from browser (override server env)</span>
+                      </label>
+                      <small className="field-help">
+                        When enabled, your Jira URL, username, and API token from this page are sent with each Jira request. Disable to rely on server environment variables.
+                      </small>
+                    </div>
                   </div>
                 </div>
               </div>
