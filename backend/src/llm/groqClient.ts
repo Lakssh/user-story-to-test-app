@@ -13,9 +13,10 @@ export class GroqClient {
   private model: string
 
   constructor() {
-    this.apiKey = process.env.groq_API_KEY || ''
-    this.baseUrl = process.env.groq_API_BASE || 'https://api.groq.com/openai/v1'
-    this.model = process.env.groq_MODEL || 'llama3-8b-8192'
+    // Support both lowercase and uppercase env var names
+    this.apiKey = process.env.groq_API_KEY || process.env.GROQ_API_KEY || ''
+    this.baseUrl = process.env.groq_API_BASE || process.env.GROQ_API_BASE || 'https://api.groq.com/openai/v1'
+    this.model = process.env.groq_MODEL || process.env.GROQ_MODEL || 'llama3-8b-8192'
     
     if (!this.apiKey) {
       console.warn('groq_API_KEY not found in environment variables')
@@ -40,7 +41,7 @@ export class GroqClient {
     console.log('Making Groq API call:')
     console.log(`Endpoint: ${endpoint}`)
     console.log(`Model: ${this.model}`)
-    console.log(`API Key: ${this.apiKey.substring(0, 10)}...${this.apiKey.substring(this.apiKey.length - 4)}`)
+  console.log(`API Key: ${this.apiKey.substring(0, 10)}...${this.apiKey.substring(this.apiKey.length - 4)}`)
     console.log(`Request body:`, JSON.stringify(requestBody, null, 2))
 
     try {

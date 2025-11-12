@@ -21,10 +21,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    // Early configuration checks for clearer errors
-    if (!process.env.groq_API_KEY) {
+    // Early configuration checks for clearer errors (support both cases)
+    const groqKey = process.env.groq_API_KEY || process.env.GROQ_API_KEY
+    if (!groqKey) {
       res.status(400).json({
-        error: 'Groq API key is not configured. Please set the groq_API_KEY environment variable.'
+        error: 'Groq API key is not configured. Please set GROQ_API_KEY (or groq_API_KEY) environment variable.'
       })
       return
     }
