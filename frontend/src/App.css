@@ -650,6 +650,30 @@ body {
   margin-bottom: 30px;
 }
 
+/* Browser Tab */
+.browser-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.browser-input {
+  flex: 1;
+}
+
+.browser-iframe-wrapper {
+  border: 1px solid #e1e8ed;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.browser-iframe {
+  width: 100%;
+  height: 70vh;
+  border: 0;
+}
+
 .story-key-container {
   display: flex;
   align-items: flex-end;

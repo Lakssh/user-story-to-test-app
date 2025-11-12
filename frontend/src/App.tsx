@@ -7,7 +7,7 @@ import * as XLSX from 'xlsx'
 
 function App() {
   const CONFIG_STORAGE_KEY = 'ust-config-data'
-  const [activeTab, setActiveTab] = useState<'manual' | 'jira' | 'config'>('manual')
+  const [activeTab, setActiveTab] = useState<'manual' | 'jira' | 'config' | 'browser'>('manual')
   const [formData, setFormData] = useState<GenerateRequest>({
     storyTitle: '',
     acceptanceCriteria: '',
@@ -27,6 +27,8 @@ function App() {
   const [expandedTestCases, setExpandedTestCases] = useState<Set<string>>(new Set())
   const [configData, setConfigData] = useState<ConfigData>({})
   const [hasLoadedConfig, setHasLoadedConfig] = useState<boolean>(false)
+  const [browserUrl, setBrowserUrl] = useState<string>('https://example.com')
+  const [browserInput, setBrowserInput] = useState<string>('https://example.com')
 
   useEffect(() => {
     if (activeTab === 'config') {
@@ -86,6 +88,13 @@ function App() {
 
   const handleJiraInputChange = (field: keyof JiraFormData, value: string) => {
     setJiraFormData(prev => ({ ...prev, [field]: value }))
+  }
+
+  const normalizeUrl = (input: string): string => {
+    const trimmed = input.trim()
+    if (!trimmed) return ''
+    if (/^https?:\/\//i.test(trimmed)) return trimmed
+    return `https://${trimmed}`
   }
 
   const handleClearManualForm = () => {
@@ -310,6 +319,12 @@ function App() {
           >
             Configuration
           </button>
+          <button 
+            className={`tab-button ${activeTab === 'browser' ? 'active' : ''}`}
+            onClick={() => setActiveTab('browser')}
+          >
+            HTML Browser
+          </button>
         </div>
         
         {activeTab === 'manual' && (
@@ -501,6 +516,44 @@ function App() {
                 </div>
               </div>
             </form>
+          </div>
+        )}
+
+        {activeTab === 'browser' && (
+          <div className="tab-content">
+            <div className="browser-container">
+              <div className="browser-controls">
+                <input
+                  type="text"
+                  className="form-input browser-input"
+                  value={browserInput}
+                  onChange={(e) => setBrowserInput(e.target.value)}
+                  placeholder="Enter a URL, e.g. https://example.com"
+                />
+                <button
+                  type="button"
+                  className="submit-btn"
+                  onClick={() => {
+                    const url = normalizeUrl(browserInput)
+                    if (url) setBrowserUrl(url)
+                  }}
+                >
+                  Open
+                </button>
+              </div>
+              <div className="field-help" style={{ marginBottom: '10px' }}>
+                Note: Some sites may block embedding in an iframe (X-Frame-Options / CSP).
+              </div>
+              <div className="browser-iframe-wrapper">
+                <iframe
+                  key={browserUrl}
+                  src={browserUrl}
+                  title="HTML Browser"
+                  className="browser-iframe"
+                  sandbox="allow-forms allow-scripts allow-popups allow-top-navigation-by-user-activation"
+                />
+              </div>
+            </div>
           </div>
         )}
 
