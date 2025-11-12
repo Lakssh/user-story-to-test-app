@@ -53,8 +53,8 @@ function App() {
     }
   }
 
-  const handleConfigChange = (field: keyof ConfigData, value: string) => {
-    setConfigData(prev => ({ ...prev, [field]: value }))
+  const handleConfigChange = (field: keyof ConfigData, value: string | boolean) => {
+    setConfigData(prev => ({ ...prev, [field]: value as any }))
   }
 
   // Persist config edits across browser sessions using localStorage
@@ -121,7 +121,22 @@ function App() {
     setError(null)
 
     try {
-      const data = await fetchJiraStory({ storyKey: jiraFormData.storyKey })
+      // Include locally stored Jira credentials if available
+      let storedConfig: Partial<ConfigData> = {}
+      try {
+        const saved = typeof window !== 'undefined' ? localStorage.getItem(CONFIG_STORAGE_KEY) : null
+        if (saved) storedConfig = JSON.parse(saved)
+      } catch {}
+
+      const requestBody: any = { storyKey: jiraFormData.storyKey }
+      const sendClientCreds = (storedConfig as any).jiraSendClientCredentials !== false
+      if (sendClientCreds) {
+        if (storedConfig.JIRA_URL) requestBody.jiraUrl = storedConfig.JIRA_URL
+        if (storedConfig.JIRA_USERNAME) requestBody.username = storedConfig.JIRA_USERNAME
+        if (storedConfig.JIRA_API_TOKEN) requestBody.apiToken = storedConfig.JIRA_API_TOKEN
+      }
+
+      const data = await fetchJiraStory(requestBody)
       setJiraFormData(prev => ({
         ...prev,
         title: data.title || '',
@@ -609,6 +624,22 @@ function App() {
                       />
                       <small className="field-help">Custom field ID for story points</small>
                     </div>
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="jiraSendClientCredentials">
+                      <input
+                        id="jiraSendClientCredentials"
+                        type="checkbox"
+                        checked={configData.jiraSendClientCredentials !== false}
+                        onChange={(e) => handleConfigChange('jiraSendClientCredentials', e.target.checked)}
+                        style={{ marginRight: '8px' }}
+                      />
+                      Send credentials from browser (override server env)
+                    </label>
+                    <small className="field-help">
+                      When enabled, your Jira URL, username, and API token from this page are sent with each Jira request. Disable to rely on server environment variables.
+                    </small>
                   </div>
                 </div>
               </div>

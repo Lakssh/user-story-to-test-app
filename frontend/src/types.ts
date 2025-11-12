@@ -58,6 +58,8 @@ export interface ConfigData {
   JIRA_API_TOKEN?: string
   JIRA_ACCEPTANCE_CRITERIA_FIELD?: string
   JIRA_STORY_POINTS_FIELD?: string
+  // Client-side option: when true, send Jira credentials from browser to API
+  jiraSendClientCredentials?: boolean
   // Server-provided flag indicating config is read-only (e.g., Vercel serverless env)
   readOnly?: boolean
 }
