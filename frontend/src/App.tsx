@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
-import { generateTests, fetchJiraStory, getConfig, updateConfig } from './api'
+import { generateTests, fetchJiraStory, getConfig } from './api'
 import { GenerateRequest, GenerateResponse, TestCase, JiraFormData, ConfigData } from './types'
 import './App.css'
 import logo from './assets/logo.png'
 import * as XLSX from 'xlsx'
 
 function App() {
+  const CONFIG_STORAGE_KEY = 'ust-config-data'
   const [activeTab, setActiveTab] = useState<'manual' | 'jira' | 'config'>('manual')
   const [formData, setFormData] = useState<GenerateRequest>({
     storyTitle: '',
@@ -25,8 +26,7 @@ function App() {
   const [error, setError] = useState<string | null>(null)
   const [expandedTestCases, setExpandedTestCases] = useState<Set<string>>(new Set())
   const [configData, setConfigData] = useState<ConfigData>({})
-  const [isConfigLoading, setIsConfigLoading] = useState<boolean>(false)
-  const [configSuccess, setConfigSuccess] = useState<string | null>(null)
+  const [hasLoadedConfig, setHasLoadedConfig] = useState<boolean>(false)
 
   useEffect(() => {
     if (activeTab === 'config') {
@@ -35,15 +35,21 @@ function App() {
   }, [activeTab])
 
   const loadConfig = async () => {
-    setIsConfigLoading(true)
     setError(null)
     try {
-      const config = await getConfig()
-      setConfigData(config)
+      // Prefer locally stored config to retain values across sessions
+      const saved = typeof window !== 'undefined' ? localStorage.getItem(CONFIG_STORAGE_KEY) : null
+      if (saved) {
+        const parsed = JSON.parse(saved)
+        setConfigData(parsed)
+      } else {
+        const config = await getConfig()
+        setConfigData(config)
+      }
+      setHasLoadedConfig(true)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load configuration')
     } finally {
-      setIsConfigLoading(false)
     }
   }
 
@@ -51,54 +57,18 @@ function App() {
     setConfigData(prev => ({ ...prev, [field]: value }))
   }
 
-  const handleSaveConfig = async () => {
-    setIsConfigLoading(true)
-    setError(null)
-    setConfigSuccess(null)
-    try {
-      // In read-only deployments, open Vercel Env Vars page instead of erroring
-      if (configData.readOnly) {
-        if (typeof window !== 'undefined') {
-          window.open('https://vercel.com/dashboard', '_blank', 'noopener')
-        }
-        setConfigSuccess('Opening Vercel Environment Variables...')
-        setTimeout(() => setConfigSuccess(null), 2500)
-        return
+  // Persist config edits across browser sessions using localStorage
+  useEffect(() => {
+    if (hasLoadedConfig && typeof window !== 'undefined') {
+      try {
+        localStorage.setItem(CONFIG_STORAGE_KEY, JSON.stringify(configData))
+      } catch (e) {
+        // Ignore storage errors (e.g., quota)
       }
-      console.log('Saving config:', configData)
-      await updateConfig(configData)
-      setConfigSuccess('Configuration saved successfully!')
-      setTimeout(() => setConfigSuccess(null), 3000)
-    } catch (err) {
-      console.error('Config save error:', err)
-      setError(err instanceof Error ? err.message : 'Failed to save configuration')
-    } finally {
-      setIsConfigLoading(false)
     }
-  }
+  }, [configData, hasLoadedConfig])
 
-  const copyEnvKeysToClipboard = async () => {
-    const keys = [
-      'CORS_ORIGIN',
-      'groq_API_BASE',
-      'groq_API_KEY',
-      'groq_MODEL',
-      'JIRA_URL',
-      'JIRA_USERNAME',
-      'JIRA_API_TOKEN',
-      'JIRA_ACCEPTANCE_CRITERIA_FIELD',
-      'JIRA_STORY_POINTS_FIELD',
-      'VITE_API_BASE_URL'
-    ]
-    const text = keys.join('\n')
-    try {
-      await navigator.clipboard.writeText(text)
-      setConfigSuccess('Environment variable keys copied to clipboard')
-      setTimeout(() => setConfigSuccess(null), 3000)
-    } catch (e) {
-      setError('Failed to copy keys to clipboard')
-    }
-  }
+  // Removed Save and Copy buttons; no external actions needed
 
   const toggleTestCaseExpansion = (testCaseId: string) => {
     const newExpanded = new Set(expandedTestCases)
@@ -276,11 +246,7 @@ function App() {
           </div>
         )}
         
-        {configSuccess && (
-          <div className="success-banner">
-            {configSuccess}
-          </div>
-        )}
+        {/* Success banner removed since there are no config actions */}
         
         <div className="tab-navigation">
           <button 
@@ -647,35 +613,7 @@ function App() {
                 </div>
               </div>
 
-              <div className="button-group config-button-group">
-                <button
-                  type="button"
-                  className="submit-btn"
-                  onClick={handleSaveConfig}
-                  disabled={isConfigLoading}
-                >
-                  {isConfigLoading ? 'Saving...' : 'Save Configuration'}
-                </button>
-                {configData.readOnly && (
-                  <>
-                    <a
-                      className="clear-btn"
-                      href="https://vercel.com/dashboard"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Open Vercel Environment Variables
-                    </a>
-                    <button
-                      type="button"
-                      className="clear-btn"
-                      onClick={copyEnvKeysToClipboard}
-                    >
-                      Copy Env Keys
-                    </button>
-                  </>
-                )}
-              </div>
+              {/* Button group removed as per request: retain inputs only, no actions */}
             </div>
           </div>
         )}
