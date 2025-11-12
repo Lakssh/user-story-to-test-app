@@ -56,6 +56,11 @@ function App() {
     setError(null)
     setConfigSuccess(null)
     try {
+      // In serverless deployments, config is read-only and must be updated via Vercel
+      if (configData.readOnly) {
+        setError('This deployment manages configuration via Vercel Environment Variables. Please update them in Vercel → Project → Settings → Environment Variables and redeploy.')
+        return
+      }
       console.log('Saving config:', configData)
       await updateConfig(configData)
       setConfigSuccess('Configuration saved successfully!')
@@ -466,6 +471,11 @@ function App() {
         {activeTab === 'config' && (
           <div className="tab-content">
             <div className="config-container">
+              {configData.readOnly && (
+                <div className="error-banner" style={{marginBottom: '16px'}}>
+                  Configuration is managed via Vercel Environment Variables in this deployment. Changes here won't persist. Update values in Vercel → Project → Settings → Environment Variables, then redeploy.
+                </div>
+              )}
               <div className="config-two-column-layout">
                 {/* Left Column - Groq API Configuration */}
                 <div className="config-column config-column-left">
@@ -620,9 +630,9 @@ function App() {
                   type="button"
                   className="submit-btn"
                   onClick={handleSaveConfig}
-                  disabled={isConfigLoading}
+                  disabled={isConfigLoading || !!configData.readOnly}
                 >
-                  {isConfigLoading ? 'Saving...' : 'Save Configuration'}
+                  {configData.readOnly ? 'Managed by Vercel' : (isConfigLoading ? 'Saving...' : 'Save Configuration')}
                 </button>
               </div>
             </div>

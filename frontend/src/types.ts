@@ -58,4 +58,6 @@ export interface ConfigData {
   JIRA_API_TOKEN?: string
   JIRA_ACCEPTANCE_CRITERIA_FIELD?: string
   JIRA_STORY_POINTS_FIELD?: string
+  // Server-provided flag indicating config is read-only (e.g., Vercel serverless env)
+  readOnly?: boolean
 }

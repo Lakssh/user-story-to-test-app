@@ -30,7 +30,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         JIRA_USERNAME: process.env.JIRA_USERNAME || '',
         JIRA_API_TOKEN: mask(process.env.JIRA_API_TOKEN || ''),
         JIRA_ACCEPTANCE_CRITERIA_FIELD: process.env.JIRA_ACCEPTANCE_CRITERIA_FIELD || '',
-        JIRA_STORY_POINTS_FIELD: process.env.JIRA_STORY_POINTS_FIELD || ''
+        JIRA_STORY_POINTS_FIELD: process.env.JIRA_STORY_POINTS_FIELD || '',
+        readOnly: true
       }
 
       res.status(200).json(config)
