@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Full-stack application that converts user stories into test cases using LLM integration",
   "private": true,
+  "engines": {
+    "node": ">=18"
+  },
   "workspaces": [
     "frontend",
     "backend"

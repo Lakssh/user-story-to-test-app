@@ -1,0 +1,11 @@
+{
+  "buildCommand": "npm install --prefix frontend && npm run build --prefix frontend",
+  "outputDirectory": "frontend/dist",
+  "installCommand": "npm install && npm install --prefix frontend",
+  "functions": {
+    "api/**/*.ts": {
+      "runtime": "nodejs18.x",
+      "includeFiles": "backend/src/**"
+    }
+  }
+}

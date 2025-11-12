@@ -1,6 +1,8 @@
 import { GenerateRequest, GenerateResponse, JiraFetchRequest, JiraStoryDetails, ConfigData } from './types'
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api'
+// Use relative API path in production (same domain), fallback to local backend during dev
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || (import.meta.env.PROD ? '/api' : 'http://localhost:8080/api')
 
 export async function generateTests(request: GenerateRequest): Promise<GenerateResponse> {
   try {
