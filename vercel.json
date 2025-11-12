@@ -1,7 +1,7 @@
 {
   "buildCommand": "npm run build --workspace=frontend",
   "outputDirectory": "frontend/dist",
-  "installCommand": "npm install",
+  "installCommand": "npm install --workspaces --include-workspace-root",
   "functions": {
     "api/**/*.ts": {
       "includeFiles": "backend/src/**"
