@@ -1,4 +1,3 @@
-import fetch from 'node-fetch'
 import { GenerateResponse } from '../schemas'
 
 interface GroqResponse {
@@ -45,7 +44,7 @@ export class GroqClient {
     console.log(`Request body:`, JSON.stringify(requestBody, null, 2))
 
     try {
-      const response = await fetch(endpoint, {
+  const response = await globalThis.fetch(endpoint, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${this.apiKey}`,

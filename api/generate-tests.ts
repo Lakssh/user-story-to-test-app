@@ -21,6 +21,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
+    // Early configuration checks for clearer errors
+    if (!process.env.groq_API_KEY) {
+      res.status(400).json({
+        error: 'Groq API key is not configured. Please set the groq_API_KEY environment variable.'
+      })
+      return
+    }
+
     // Validate request body
     const validationResult = GenerateRequestSchema.safeParse(req.body)
 
