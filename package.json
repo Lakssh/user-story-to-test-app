@@ -19,6 +19,7 @@
     "load-secrets:api": "tsx scripts/load-github-secrets.ts --api"
   },
   "devDependencies": {
+    "@vercel/node": "^5.5.5",
     "concurrently": "^8.2.2"
   }
 }
