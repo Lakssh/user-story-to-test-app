@@ -44,8 +44,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const effectiveModel = clientGroqModel || process.env.groq_MODEL || process.env.GROQ_MODEL
 
     if (!effectiveKey) {
+      const envProvided = Boolean(process.env.groq_API_KEY || process.env.GROQ_API_KEY)
+      const clientProvided = Boolean(clientGroqKey)
       res.status(400).json({
-        error: 'Groq API key is not configured. Set GROQ_API_KEY (or groq_API_KEY) in server env, or include groq_API_KEY in the request body when client-side override is enabled.'
+        error: `Groq API key is not configured. Set GROQ_API_KEY (or groq_API_KEY) in server env, or include groq_API_KEY in the request body when client-side override is enabled. [clientProvided=${clientProvided}, envProvided=${envProvided}]`
       })
       return
     }
