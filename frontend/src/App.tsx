@@ -29,6 +29,7 @@ function App() {
   const [hasLoadedConfig, setHasLoadedConfig] = useState<boolean>(false)
   const [browserUrl, setBrowserUrl] = useState<string>('https://example.com')
   const [browserInput, setBrowserInput] = useState<string>('https://example.com')
+  const [navCollapsed, setNavCollapsed] = useState<boolean>(false)
 
   useEffect(() => {
     if (activeTab === 'config') {
@@ -299,12 +300,22 @@ function App() {
         )}
         
         {/* Left-hand navigation layout */}
-        <div className="app-layout">
-          <aside className="side-nav">
+        <div className={`app-layout ${navCollapsed ? 'collapsed' : ''}`}>
+          <aside className={`side-nav ${navCollapsed ? 'collapsed' : ''}`}>
+            <button
+              type="button"
+              className="collapse-toggle"
+              onClick={() => setNavCollapsed(v => !v)}
+              aria-label={navCollapsed ? 'Expand navigation' : 'Collapse navigation'}
+              title={navCollapsed ? 'Expand' : 'Collapse'}
+            >
+              {navCollapsed ? '»' : '«'}
+            </button>
             <button
               className={`nav-button ${activeTab === 'manual' ? 'active' : ''}`}
               onClick={() => setActiveTab('manual')}
               aria-label="Manual test case generation"
+              title="Manual TC Generation"
             >
               <span className="nav-icon">✍️</span>
               <span className="nav-text">Manual TC Generation</span>
@@ -313,6 +324,7 @@ function App() {
               className={`nav-button ${activeTab === 'jira' ? 'active' : ''}`}
               onClick={() => setActiveTab('jira')}
               aria-label="Generate from Jira"
+              title="TC generation from Jira"
             >
               <span className="nav-icon">🗂️</span>
               <span className="nav-text">TC generation from Jira</span>
@@ -321,6 +333,7 @@ function App() {
               className={`nav-button ${activeTab === 'code' ? 'active' : ''}`}
               onClick={() => setActiveTab('code')}
               aria-label="Code review"
+              title="Code Review"
             >
               <span className="nav-icon">🔍</span>
               <span className="nav-text">Code Review</span>
@@ -329,6 +342,7 @@ function App() {
               className={`nav-button ${activeTab === 'regression' ? 'active' : ''}`}
               onClick={() => setActiveTab('regression')}
               aria-label="Regression impact analyser"
+              title="Regression Impact Analyser"
             >
               <span className="nav-icon">🧪</span>
               <span className="nav-text">Regression Impact Analyser</span>
@@ -337,6 +351,7 @@ function App() {
               className={`nav-button ${activeTab === 'defects' ? 'active' : ''}`}
               onClick={() => setActiveTab('defects')}
               aria-label="Defect prediction"
+              title="Defect Prediction"
             >
               <span className="nav-icon">🐞</span>
               <span className="nav-text">Defect Prediction</span>
@@ -345,6 +360,7 @@ function App() {
               className={`nav-button ${activeTab === 'config' ? 'active' : ''}`}
               onClick={() => setActiveTab('config')}
               aria-label="Configuration"
+              title="Configuration"
             >
               <span className="nav-icon">⚙️</span>
               <span className="nav-text">Configuration</span>
@@ -353,6 +369,7 @@ function App() {
               className={`nav-button ${activeTab === 'browser' ? 'active' : ''}`}
               onClick={() => setActiveTab('browser')}
               aria-label="HTML browser"
+              title="HTML Browser"
             >
               <span className="nav-icon">🌐</span>
               <span className="nav-text">HTML Browser</span>
