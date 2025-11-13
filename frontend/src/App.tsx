@@ -298,53 +298,67 @@ function App() {
           </div>
         )}
         
-        {/* Success banner removed since there are no config actions */}
-        
-        <div className="tab-navigation">
-          <button 
-            className={`tab-button ${activeTab === 'manual' ? 'active' : ''}`}
-            onClick={() => setActiveTab('manual')}
-          >
-            Manual TC Generation
-          </button>
-          <button 
-            className={`tab-button ${activeTab === 'jira' ? 'active' : ''}`}
-            onClick={() => setActiveTab('jira')}
-          >
-            TC generation from Jira
-          </button>
-          <button 
-            className={`tab-button ${activeTab === 'code' ? 'active' : ''}`}
-            onClick={() => setActiveTab('code')}
-          >
-            Code Review
-          </button>
-          <button 
-            className={`tab-button ${activeTab === 'regression' ? 'active' : ''}`}
-            onClick={() => setActiveTab('regression')}
-          >
-            Regression Impact Analyser
-          </button>
-          <button 
-            className={`tab-button ${activeTab === 'defects' ? 'active' : ''}`}
-            onClick={() => setActiveTab('defects')}
-          >
-            Defect Prediction
-          </button>
-          <button 
-            className={`tab-button ${activeTab === 'config' ? 'active' : ''}`}
-            onClick={() => setActiveTab('config')}
-          >
-            Configuration
-          </button>
-          <button 
-            className={`tab-button ${activeTab === 'browser' ? 'active' : ''}`}
-            onClick={() => setActiveTab('browser')}
-          >
-            HTML Browser
-          </button>
-        </div>
-        
+        {/* Left-hand navigation layout */}
+        <div className="app-layout">
+          <aside className="side-nav">
+            <button
+              className={`nav-button ${activeTab === 'manual' ? 'active' : ''}`}
+              onClick={() => setActiveTab('manual')}
+              aria-label="Manual test case generation"
+            >
+              <span className="nav-icon">✍️</span>
+              <span className="nav-text">Manual TC Generation</span>
+            </button>
+            <button
+              className={`nav-button ${activeTab === 'jira' ? 'active' : ''}`}
+              onClick={() => setActiveTab('jira')}
+              aria-label="Generate from Jira"
+            >
+              <span className="nav-icon">🗂️</span>
+              <span className="nav-text">TC generation from Jira</span>
+            </button>
+            <button
+              className={`nav-button ${activeTab === 'code' ? 'active' : ''}`}
+              onClick={() => setActiveTab('code')}
+              aria-label="Code review"
+            >
+              <span className="nav-icon">🔍</span>
+              <span className="nav-text">Code Review</span>
+            </button>
+            <button
+              className={`nav-button ${activeTab === 'regression' ? 'active' : ''}`}
+              onClick={() => setActiveTab('regression')}
+              aria-label="Regression impact analyser"
+            >
+              <span className="nav-icon">🧪</span>
+              <span className="nav-text">Regression Impact Analyser</span>
+            </button>
+            <button
+              className={`nav-button ${activeTab === 'defects' ? 'active' : ''}`}
+              onClick={() => setActiveTab('defects')}
+              aria-label="Defect prediction"
+            >
+              <span className="nav-icon">🐞</span>
+              <span className="nav-text">Defect Prediction</span>
+            </button>
+            <button
+              className={`nav-button ${activeTab === 'config' ? 'active' : ''}`}
+              onClick={() => setActiveTab('config')}
+              aria-label="Configuration"
+            >
+              <span className="nav-icon">⚙️</span>
+              <span className="nav-text">Configuration</span>
+            </button>
+            <button
+              className={`nav-button ${activeTab === 'browser' ? 'active' : ''}`}
+              onClick={() => setActiveTab('browser')}
+              aria-label="HTML browser"
+            >
+              <span className="nav-icon">🌐</span>
+              <span className="nav-text">HTML Browser</span>
+            </button>
+          </aside>
+          <section className="main-panel">
         {activeTab === 'manual' && (
           <form onSubmit={handleSubmit} className="tab-content">
           <div className="form-group">
@@ -554,7 +568,7 @@ function App() {
             </div>
           </div>
         )}
-
+        
         {activeTab === 'regression' && (
           <div className="tab-content">
             <h3 className="config-section-title" style={{ marginBottom: 16 }}>
@@ -832,6 +846,9 @@ function App() {
             </div>
           </div>
         )}
+
+          </section>
+        </div>
 
         {isLoading && (
           <div className="loading">
