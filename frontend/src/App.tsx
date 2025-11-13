@@ -330,7 +330,7 @@ function App() {
           </div>
           <div className="header-content">
             <h1 className="title">QA360 Assistant</h1>
-            <p className="subtitle">Generate comprehensive test cases from your user stories</p>
+            <p className="subtitle">Comprehensive assistant to accelerate QA delivery</p>
           </div>
         </div>
         
@@ -382,22 +382,11 @@ function App() {
                   role="img"
                   aria-hidden="true"
                   focusable="false"
-                  stroke="currentColor"
-                  strokeWidth="2.25"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
                 >
-                  {/* Code window with pencil - represents Test Case authoring */}
-                  <rect x="3" y="4" width="14" height="12" rx="2" />
-                  <line x1="5" y1="7" x2="7" y2="7" />
-                  <line x1="8" y1="7" x2="10" y2="7" />
-                  {/* code chevrons */}
-                  <polyline points="9 10 7 12 9 14" />
-                  <polyline points="13 10 15 12 13 14" />
-                  {/* pencil overlay at bottom-right */}
-                  <line x1="15" y1="14" x2="20" y2="19" />
-                  <line x1="20" y1="19" x2="21" y2="18" />
-                  <line x1="14" y1="15" x2="15" y2="14" />
+                  {/* Clipboard with check - Test Case generation */}
+                  <rect x="6" y="5" width="12" height="14" rx="2" />
+                  <path d="M9 5V4a3 3 0 0 1 6 0v1" />
+                  <path d="M9 13l2 2 4-4" />
                 </svg>
               </span>
               <span className="nav-text">TC Generation</span>
@@ -418,17 +407,13 @@ function App() {
                   role="img"
                   aria-hidden="true"
                   focusable="false"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
                 >
+                  {/* Code window with magnifier - Code Review */}
                   <rect x="3" y="4" width="14" height="12" rx="2" />
-                  <line x1="6" y1="8" x2="11" y2="8" />
-                  <line x1="6" y1="11" x2="13" y2="11" />
-                  <line x1="6" y1="14" x2="11.5" y2="14" />
-                  <circle cx="17" cy="17" r="3.5" />
-                  <line x1="19.5" y1="19.5" x2="22" y2="22" />
+                  <polyline points="9 8 7 10 9 12" />
+                  <polyline points="13 8 15 10 13 12" />
+                  <circle cx="18" cy="17" r="3" />
+                  <line x1="20" y1="19" x2="22" y2="21" />
                 </svg>
               </span>
               <span className="nav-text">Code Review</span>

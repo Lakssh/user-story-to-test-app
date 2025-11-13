@@ -731,6 +731,16 @@ body {
   font-size: 18px;
 }
 
+/* Unify inline SVG icon look across nav */
+.nav-icon svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 2.1px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .nav-text {
   white-space: nowrap;
   overflow: hidden;
