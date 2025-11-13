@@ -536,6 +536,9 @@ function App() {
         
         {activeTab === 'jira' && (
           <div className="tab-content">
+            <h3 className="config-section-title" style={{ marginBottom: 16 }}>
+              <span className="config-icon">🧾</span> User Story to Test case Generation
+            </h3>
             <form onSubmit={handleJiraSubmit}>
               <div className="jira-two-column-layout">
                 {/* Left Column */}
