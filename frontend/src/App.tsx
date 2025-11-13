@@ -7,7 +7,7 @@ import * as XLSX from 'xlsx'
 
 function App() {
   const CONFIG_STORAGE_KEY = 'ust-config-data'
-  const [activeTab, setActiveTab] = useState<'manual' | 'jira' | 'config' | 'browser' | 'code' | 'regression' | 'defects'>('manual')
+  const [activeTab, setActiveTab] = useState<'manual' | 'jira' | 'config' | 'browser' | 'code' | 'regression' | 'defects'>('jira')
   const [formData, setFormData] = useState<GenerateRequest>({
     storyTitle: '',
     acceptanceCriteria: '',
@@ -32,7 +32,7 @@ function App() {
   const [navCollapsed, setNavCollapsed] = useState<boolean>(true)
   const NAV_COLLAPSED_STORAGE_KEY = 'ust-nav-collapsed'
   const ACTIVE_TAB_STORAGE_KEY = 'ust-active-tab'
-  const ALL_TABS = ['manual', 'jira', 'config', 'browser', 'code', 'regression', 'defects'] as const
+  const ALL_TABS = ['jira', 'config', 'browser', 'code', 'regression', 'defects'] as const
 
   // Initialize navCollapsed from localStorage (if available)
   useEffect(() => {
@@ -353,15 +353,7 @@ function App() {
               >
                 <span className="collapse-icon" aria-hidden="true">{navCollapsed ? '»' : '«'}</span>
               </button>
-            <button
-              className={`nav-button ${activeTab === 'manual' ? 'active' : ''}`}
-              onClick={() => setActiveTab('manual')}
-              aria-label="Manual test case generation"
-              title="Manual TC Generation"
-            >
-              <span className="nav-icon">✍️</span>
-              <span className="nav-text">Manual TC Generation</span>
-            </button>
+            {/* Manual tab hidden for now; retained for future use */}
             <button
               className={`nav-button ${activeTab === 'jira' ? 'active' : ''}`}
               onClick={() => setActiveTab('jira')}
