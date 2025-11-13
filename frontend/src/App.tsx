@@ -7,7 +7,7 @@ import * as XLSX from 'xlsx'
 
 function App() {
   const CONFIG_STORAGE_KEY = 'ust-config-data'
-  const [activeTab, setActiveTab] = useState<'manual' | 'jira' | 'config' | 'browser'>('manual')
+  const [activeTab, setActiveTab] = useState<'manual' | 'jira' | 'config' | 'browser' | 'code' | 'regression' | 'defects'>('manual')
   const [formData, setFormData] = useState<GenerateRequest>({
     storyTitle: '',
     acceptanceCriteria: '',
@@ -287,7 +287,7 @@ function App() {
             <img src={logo} alt="User Story to Tests Logo" />
           </div>
           <div className="header-content">
-            <h1 className="title">User Story to Tests</h1>
+            <h1 className="title">QA360 Assistant</h1>
             <p className="subtitle">Generate comprehensive test cases from your user stories</p>
           </div>
         </div>
@@ -305,13 +305,31 @@ function App() {
             className={`tab-button ${activeTab === 'manual' ? 'active' : ''}`}
             onClick={() => setActiveTab('manual')}
           >
-            Manual Input
+            Manual TC Generation
           </button>
           <button 
             className={`tab-button ${activeTab === 'jira' ? 'active' : ''}`}
             onClick={() => setActiveTab('jira')}
           >
-            Jira Integration
+            TC generation from Jira
+          </button>
+          <button 
+            className={`tab-button ${activeTab === 'code' ? 'active' : ''}`}
+            onClick={() => setActiveTab('code')}
+          >
+            Code Review
+          </button>
+          <button 
+            className={`tab-button ${activeTab === 'regression' ? 'active' : ''}`}
+            onClick={() => setActiveTab('regression')}
+          >
+            Regression Impact Analyser
+          </button>
+          <button 
+            className={`tab-button ${activeTab === 'defects' ? 'active' : ''}`}
+            onClick={() => setActiveTab('defects')}
+          >
+            Defect Prediction
           </button>
           <button 
             className={`tab-button ${activeTab === 'config' ? 'active' : ''}`}
@@ -516,6 +534,71 @@ function App() {
                 </div>
               </div>
             </form>
+          </div>
+        )}
+
+        {activeTab === 'code' && (
+          <div className="tab-content">
+            <h3 className="config-section-title" style={{ marginBottom: 16 }}>
+              <span className="config-icon">🧩</span> Code Review
+            </h3>
+            <div className="form-group">
+              <label className="form-label" htmlFor="codeReviewInput">Paste code or diff</label>
+              <div className="field-wrapper">
+                <textarea id="codeReviewInput" className="form-textarea" placeholder="Paste your code snippet or git diff here to review..." style={{ minHeight: 200 }} />
+                <small className="field-help">Tip: You can copy a unified diff (git diff) or a single file’s content.</small>
+              </div>
+            </div>
+            <div className="success-banner" style={{ marginTop: 10 }}>
+              Analysis coming soon. This section will highlight issues, smells, and suggestions with severity and quick fixes.
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'regression' && (
+          <div className="tab-content">
+            <h3 className="config-section-title" style={{ marginBottom: 16 }}>
+              <span className="config-icon">🧪</span> Regression Impact Analyser
+            </h3>
+            <div className="form-group">
+              <label className="form-label" htmlFor="regressionFiles">Changed files / areas</label>
+              <div className="field-wrapper">
+                <textarea id="regressionFiles" className="form-textarea" placeholder="List changed files or modules (one per line)..." style={{ minHeight: 160 }} />
+                <small className="field-help">Example: src/components/Button.tsx, backend/src/services/userService.ts</small>
+              </div>
+            </div>
+            <div className="form-group">
+              <label className="form-label" htmlFor="regressionNotes">Notes (optional)</label>
+              <div className="field-wrapper">
+                <textarea id="regressionNotes" className="form-textarea" placeholder="Add context like feature area, risky dependencies, or recent incidents..." style={{ minHeight: 120 }} />
+              </div>
+            </div>
+            <div className="success-banner" style={{ marginTop: 10 }}>
+              Impact analysis coming soon. You’ll see affected components, recommended regression suites, and risk scoring.
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'defects' && (
+          <div className="tab-content">
+            <h3 className="config-section-title" style={{ marginBottom: 16 }}>
+              <span className="config-icon">🐞</span> Defect Prediction
+            </h3>
+            <div className="form-group">
+              <label className="form-label" htmlFor="defectDesc">Commit/PR description</label>
+              <div className="field-wrapper">
+                <textarea id="defectDesc" className="form-textarea" placeholder="Describe the change, scope, and key behaviors..." style={{ minHeight: 140 }} />
+              </div>
+            </div>
+            <div className="form-group">
+              <label className="form-label" htmlFor="defectComponents">Components touched</label>
+              <div className="field-wrapper">
+                <input id="defectComponents" type="text" className="form-input" placeholder="e.g., Auth, Checkout, Payments" />
+              </div>
+            </div>
+            <div className="success-banner" style={{ marginTop: 10 }}>
+              Prediction coming soon. This will estimate defect likelihood, areas of concern, and suggest additional tests.
+            </div>
           </div>
         )}
 
