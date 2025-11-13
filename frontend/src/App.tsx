@@ -332,17 +332,6 @@ function App() {
             <h1 className="title">QA360 Assistant</h1>
             <p className="subtitle">Generate comprehensive test cases from your user stories</p>
           </div>
-          <button
-            type="button"
-            className={`hamburger-toggle ${navCollapsed ? '' : 'open'}`}
-            onClick={() => setNavCollapsed(v => !v)}
-            aria-label={navCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            title={navCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
         </div>
         
         {error && (
@@ -354,6 +343,15 @@ function App() {
         {/* Left-hand navigation layout */}
         <div className={`app-layout ${navCollapsed ? 'collapsed' : ''}`}>
           <aside className={`side-nav ${navCollapsed ? 'collapsed' : ''}`}>
+            <button
+              type="button"
+              className="collapse-toggle"
+              onClick={() => setNavCollapsed(v => !v)}
+              aria-label={navCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+              title={navCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            >
+              ☰
+            </button>
             <button
               className={`nav-button ${activeTab === 'manual' ? 'active' : ''}`}
               onClick={() => setActiveTab('manual')}
