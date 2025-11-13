@@ -29,7 +29,48 @@ function App() {
   const [hasLoadedConfig, setHasLoadedConfig] = useState<boolean>(false)
   const [browserUrl, setBrowserUrl] = useState<string>('https://example.com')
   const [browserInput, setBrowserInput] = useState<string>('https://example.com')
-  const [navCollapsed, setNavCollapsed] = useState<boolean>(false)
+  const [navCollapsed, setNavCollapsed] = useState<boolean>(true)
+  const NAV_COLLAPSED_STORAGE_KEY = 'ust-nav-collapsed'
+  const ACTIVE_TAB_STORAGE_KEY = 'ust-active-tab'
+  const ALL_TABS = ['manual', 'jira', 'config', 'browser', 'code', 'regression', 'defects'] as const
+
+  // Initialize navCollapsed from localStorage (if available)
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    try {
+      const saved = localStorage.getItem(NAV_COLLAPSED_STORAGE_KEY)
+      if (saved !== null) {
+        setNavCollapsed(saved === 'true')
+      }
+    } catch {}
+  }, [])
+
+  // Persist navCollapsed to localStorage on change
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    try {
+      localStorage.setItem(NAV_COLLAPSED_STORAGE_KEY, String(navCollapsed))
+    } catch {}
+  }, [navCollapsed])
+
+  // Initialize activeTab from localStorage (if available and valid)
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    try {
+      const savedTab = localStorage.getItem(ACTIVE_TAB_STORAGE_KEY)
+      if (savedTab && (ALL_TABS as readonly string[]).includes(savedTab)) {
+        setActiveTab(savedTab as typeof ALL_TABS[number])
+      }
+    } catch {}
+  }, [])
+
+  // Persist activeTab to localStorage on change
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    try {
+      localStorage.setItem(ACTIVE_TAB_STORAGE_KEY, activeTab)
+    } catch {}
+  }, [activeTab])
 
   useEffect(() => {
     if (activeTab === 'config') {
@@ -291,6 +332,17 @@ function App() {
             <h1 className="title">QA360 Assistant</h1>
             <p className="subtitle">Generate comprehensive test cases from your user stories</p>
           </div>
+          <button
+            type="button"
+            className={`hamburger-toggle ${navCollapsed ? '' : 'open'}`}
+            onClick={() => setNavCollapsed(v => !v)}
+            aria-label={navCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            title={navCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
         </div>
         
         {error && (
@@ -302,15 +354,6 @@ function App() {
         {/* Left-hand navigation layout */}
         <div className={`app-layout ${navCollapsed ? 'collapsed' : ''}`}>
           <aside className={`side-nav ${navCollapsed ? 'collapsed' : ''}`}>
-            <button
-              type="button"
-              className="collapse-toggle"
-              onClick={() => setNavCollapsed(v => !v)}
-              aria-label={navCollapsed ? 'Expand navigation' : 'Collapse navigation'}
-              title={navCollapsed ? 'Expand' : 'Collapse'}
-            >
-              {navCollapsed ? '»' : '«'}
-            </button>
             <button
               className={`nav-button ${activeTab === 'manual' ? 'active' : ''}`}
               onClick={() => setActiveTab('manual')}
