@@ -538,11 +538,10 @@ function App() {
                     </label>
                     <textarea
                       id="jiraDescription"
-                      className={`form-textarea jira-textarea-description ${jiraFormData.description ? 'readonly-field' : ''}`}
+                      className="form-textarea jira-textarea-description"
                       value={jiraFormData.description}
                       onChange={(e) => handleJiraInputChange('description', e.target.value)}
                       placeholder="Story description will be populated from Jira..."
-                      readOnly={!!jiraFormData.description}
                     />
                   </div>
 
@@ -569,12 +568,11 @@ function App() {
                     <input
                       type="text"
                       id="jiraTitle"
-                      className={`form-input ${jiraFormData.title ? 'readonly-field' : ''}`}
+                      className="form-input"
                       value={jiraFormData.title}
                       onChange={(e) => handleJiraInputChange('title', e.target.value)}
                       placeholder="Story title will be populated from Jira..."
                       required
-                      readOnly={!!jiraFormData.title}
                     />
                   </div>
 
@@ -584,12 +582,11 @@ function App() {
                     </label>
                     <textarea
                       id="jiraAcceptanceCriteria"
-                      className={`form-textarea jira-textarea-acceptance ${jiraFormData.acceptanceCriteria ? 'readonly-field' : ''}`}
+                      className="form-textarea jira-textarea-acceptance"
                       value={jiraFormData.acceptanceCriteria}
                       onChange={(e) => handleJiraInputChange('acceptanceCriteria', e.target.value)}
                       placeholder="Acceptance criteria will be populated from Jira..."
                       required
-                      readOnly={!!jiraFormData.acceptanceCriteria}
                     />
                   </div>
 
