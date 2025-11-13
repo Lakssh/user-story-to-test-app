@@ -351,7 +351,19 @@ function App() {
                 aria-label={navCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
                 title={navCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
               >
-                <span className="collapse-icon" aria-hidden="true">{navCollapsed ? '»' : '«'}</span>
+                <span className="collapse-icon" aria-hidden="true">
+                  {navCollapsed ? (
+                    // Chevron Right SVG (expand)
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" focusable="false">
+                      <polyline points="9 6 15 12 9 18" />
+                    </svg>
+                  ) : (
+                    // Chevron Left SVG (collapse)
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" focusable="false">
+                      <polyline points="15 6 9 12 15 18" />
+                    </svg>
+                  )}
+                </span>
               </button>
             {/* Manual tab hidden for now; retained for future use */}
             <button
@@ -361,9 +373,28 @@ function App() {
               title="TC Generation"
             >
               <span className="nav-icon" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img">
-                  <polygon points="12,2 22,12 12,22 2,12" fill="#2684FF"/>
-                  <polygon points="12,5.5 18.5,12 12,18.5 5.5,12" fill="#79A6FF"/>
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  role="img"
+                  aria-hidden="true"
+                  focusable="false"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  {/* Checklist icon for Test Case Generation */}
+                  <rect x="3" y="4" width="4" height="4" rx="1" />
+                  <path d="M4 6l1 1 2-2" />
+                  <line x1="9" y1="6" x2="21" y2="6" />
+                  <rect x="3" y="10" width="4" height="4" rx="1" />
+                  <line x1="9" y1="12" x2="21" y2="12" />
+                  <rect x="3" y="16" width="4" height="4" rx="1" />
+                  <line x1="9" y1="18" x2="21" y2="18" />
                 </svg>
               </span>
               <span className="nav-text">TC Generation</span>
