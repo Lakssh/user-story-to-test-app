@@ -343,15 +343,18 @@ function App() {
         {/* Left-hand navigation layout */}
         <div className={`app-layout ${navCollapsed ? 'collapsed' : ''}`}>
           <aside className={`side-nav ${navCollapsed ? 'collapsed' : ''}`}>
-            <button
-              type="button"
-              className="collapse-toggle"
-              onClick={() => setNavCollapsed(v => !v)}
-              aria-label={navCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-              title={navCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-            >
-              ☰
-            </button>
+            <div className="side-nav-inner">
+              <button
+                type="button"
+                className="collapse-toggle"
+                onClick={() => setNavCollapsed(v => !v)}
+                aria-label={navCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+                title={navCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+              >
+                <span className="bar"></span>
+                <span className="bar"></span>
+                <span className="bar"></span>
+              </button>
             <button
               className={`nav-button ${activeTab === 'manual' ? 'active' : ''}`}
               onClick={() => setActiveTab('manual')}
@@ -415,6 +418,7 @@ function App() {
               <span className="nav-icon">🌐</span>
               <span className="nav-text">HTML Browser</span>
             </button>
+            </div>
           </aside>
           <section className="main-panel">
         {activeTab === 'manual' && (

@@ -183,55 +183,6 @@ body {
   text-align: left;
 }
 
-.hamburger-toggle {
-  position: absolute;
-  right: 16px;
-  top: 16px;
-  z-index: 2;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.2);
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(4px);
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.hamburger-toggle:hover {
-  background: rgba(255,255,255,0.14);
-  border-color: rgba(255,255,255,0.3);
-  transform: translateY(-1px);
-}
-
-.hamburger-toggle span {
-  display: block;
-  width: 18px;
-  height: 2px;
-  background: #e5e7eb; /* slate-200 */
-  border-radius: 2px;
-  transition: all 0.2s ease;
-}
-
-.hamburger-toggle span + span {
-  margin-top: 4px;
-}
-
-/* Animate hamburger into an X when sidebar is expanded */
-.hamburger-toggle.open span:nth-child(1) {
-  transform: translateY(6px) rotate(45deg);
-}
-
-.hamburger-toggle.open span:nth-child(2) {
-  opacity: 0;
-}
-
-.hamburger-toggle.open span:nth-child(3) {
-  transform: translateY(-6px) rotate(-45deg);
-}
-
 .title {
   font-size: 1.6rem;
   color: #f8fafc;
@@ -663,7 +614,7 @@ body {
   display: grid;
   grid-template-columns: 200px 1fr; /* compact width */
   gap: 20px;
-  align-items: start;
+  align-items: stretch;
   transition: grid-template-columns 0.25s ease;
 }
 
@@ -680,8 +631,16 @@ body {
   flex-direction: column;
   gap: 6px;
   border: 1px solid #e1e8ed;
+  height: 100%;
+}
+
+/* Sticky inner wrapper to keep controls in view, while aside participates in equal-height grid */
+.side-nav-inner {
   position: sticky;
   top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .side-nav.collapsed {
@@ -765,11 +724,13 @@ body {
   background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
   border: 1px solid #e2e8f0;
   color: #334155;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: grid;
+  place-items: center;
 }
 
 .collapse-toggle:hover {
@@ -782,6 +743,33 @@ body {
   align-self: center;
 }
 
+/* Collapse toggle bars */
+.collapse-toggle .bar {
+  display: block;
+  width: 16px;
+  height: 2px;
+  background: #334155; /* slate-700 */
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+}
+
+.collapse-toggle .bar + .bar {
+  margin-top: 3px;
+}
+
+/* Morph into X when sidebar is expanded */
+.side-nav:not(.collapsed) .collapse-toggle .bar:nth-child(1) {
+  transform: translateY(5px) rotate(45deg);
+}
+
+.side-nav:not(.collapsed) .collapse-toggle .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.side-nav:not(.collapsed) .collapse-toggle .bar:nth-child(3) {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
 .main-panel {
   min-width: 0; /* allow content to shrink properly */
 }
@@ -790,7 +778,10 @@ body {
   .app-layout {
     grid-template-columns: 1fr;
   }
-  .side-nav {
+  .side-nav-inner {
+    position: static;
+    top: auto;
+    display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 8px;
