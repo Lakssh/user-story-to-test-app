@@ -383,18 +383,21 @@ function App() {
                   aria-hidden="true"
                   focusable="false"
                   stroke="currentColor"
-                  strokeWidth="2"
+                  strokeWidth="2.25"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
-                  {/* Checklist icon for Test Case Generation */}
-                  <rect x="3" y="4" width="4" height="4" rx="1" />
-                  <path d="M4 6l1 1 2-2" />
-                  <line x1="9" y1="6" x2="21" y2="6" />
-                  <rect x="3" y="10" width="4" height="4" rx="1" />
-                  <line x1="9" y1="12" x2="21" y2="12" />
-                  <rect x="3" y="16" width="4" height="4" rx="1" />
-                  <line x1="9" y1="18" x2="21" y2="18" />
+                  {/* Code window with pencil - represents Test Case authoring */}
+                  <rect x="3" y="4" width="14" height="12" rx="2" />
+                  <line x1="5" y1="7" x2="7" y2="7" />
+                  <line x1="8" y1="7" x2="10" y2="7" />
+                  {/* code chevrons */}
+                  <polyline points="9 10 7 12 9 14" />
+                  <polyline points="13 10 15 12 13 14" />
+                  {/* pencil overlay at bottom-right */}
+                  <line x1="15" y1="14" x2="20" y2="19" />
+                  <line x1="20" y1="19" x2="21" y2="18" />
+                  <line x1="14" y1="15" x2="15" y2="14" />
                 </svg>
               </span>
               <span className="nav-text">TC Generation</span>
@@ -405,7 +408,29 @@ function App() {
               aria-label="Code review"
               title="Code Review"
             >
-              <span className="nav-icon">🔍</span>
+              <span className="nav-icon" aria-hidden="true">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  role="img"
+                  aria-hidden="true"
+                  focusable="false"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect x="3" y="4" width="14" height="12" rx="2" />
+                  <line x1="6" y1="8" x2="11" y2="8" />
+                  <line x1="6" y1="11" x2="13" y2="11" />
+                  <line x1="6" y1="14" x2="11.5" y2="14" />
+                  <circle cx="17" cy="17" r="3.5" />
+                  <line x1="19.5" y1="19.5" x2="22" y2="22" />
+                </svg>
+              </span>
               <span className="nav-text">Code Review</span>
             </button>
             <button
