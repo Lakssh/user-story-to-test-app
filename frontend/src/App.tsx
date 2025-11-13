@@ -163,8 +163,8 @@ function App() {
   }
 
   const handleFetchJiraStory = async () => {
+    // Make Story Key optional: if missing, do nothing (no error)
     if (!jiraFormData.storyKey.trim()) {
-      setError('Please enter a Jira story key')
       return
     }
 
@@ -357,8 +357,8 @@ function App() {
             <button
               className={`nav-button ${activeTab === 'jira' ? 'active' : ''}`}
               onClick={() => setActiveTab('jira')}
-              aria-label="Jira TC generation"
-              title="Jira TC generation"
+              aria-label="TC Generation"
+              title="TC Generation"
             >
               <span className="nav-icon" aria-hidden="true">
                 <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img">
@@ -366,7 +366,7 @@ function App() {
                   <polygon points="12,5.5 18.5,12 12,18.5 5.5,12" fill="#79A6FF"/>
                 </svg>
               </span>
-              <span className="nav-text">Jira TC generation</span>
+              <span className="nav-text">TC Generation</span>
             </button>
             <button
               className={`nav-button ${activeTab === 'code' ? 'active' : ''}`}
@@ -501,7 +501,7 @@ function App() {
                 <div className="jira-column jira-column-left">
                   <div className="form-group">
                     <label htmlFor="storyKey" className="form-label">
-                      Story Key *
+                      Story Key
                     </label>
                     <div className="story-key-container">
                       <input
@@ -511,17 +511,17 @@ function App() {
                         value={jiraFormData.storyKey}
                         onChange={(e) => handleJiraInputChange('storyKey', e.target.value)}
                         placeholder="Enter Jira story key (e.g., PROJ-123)..."
-                        required
                       />
                       <button
                         type="button"
                         className="fetch-button"
                         onClick={handleFetchJiraStory}
-                        disabled={isLoading || !jiraFormData.storyKey.trim()}
+                        disabled={isLoading}
                       >
                         {isLoading ? 'Fetching...' : 'Fetch'}
                       </button>
                     </div>
+                    <small className="field-help hint-optional">Optional - Enter Story Key and fetch the details automatically from Jira</small>
                   </div>
 
                   <div className="form-group">

@@ -1091,6 +1091,24 @@ body {
   text-decoration: underline;
 }
 
+/* Optional hint styling with info marker */
+.field-help.hint-optional {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 6px;
+  color: #475569; /* slate-600 */
+  font-style: normal; /* override default italic */
+}
+
+.field-help.hint-optional::before {
+  content: 'ℹ︎';
+  color: #2e3ad8; /* brand indigo */
+  font-size: 12px;
+  line-height: 1;
+  margin-top: 1px;
+}
+
 .config-button-group {
   margin-top: 30px;
   padding-top: 20px;
