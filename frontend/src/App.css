@@ -768,31 +768,12 @@ body {
   align-self: center;
 }
 
-/* Collapse toggle bars */
-.collapse-toggle .bar {
-  display: block;
-  width: 18px;
-  height: 2px;
-  background: #e2e8f0; /* slate-200 near-white for contrast on dark bg */
-  border-radius: 2px;
-  transition: transform 0.2s ease, opacity 0.2s ease, background 0.2s ease;
-}
-
-.collapse-toggle .bar + .bar {
-  margin-top: 4px;
-}
-
-/* Morph into X when sidebar is expanded */
-.side-nav:not(.collapsed) .collapse-toggle .bar:nth-child(1) {
-  transform: translateY(6px) rotate(45deg);
-}
-
-.side-nav:not(.collapsed) .collapse-toggle .bar:nth-child(2) {
-  opacity: 0;
-}
-
-.side-nav:not(.collapsed) .collapse-toggle .bar:nth-child(3) {
-  transform: translateY(-6px) rotate(-45deg);
+/* Collapse/expand icon */
+.collapse-icon {
+  font-size: 16px;
+  color: #f8fafc;
+  display: inline-block;
+  line-height: 1;
 }
 
 .main-panel {
@@ -987,23 +968,24 @@ body {
 
 /* Enhanced Form Groups in Jira Tab */
 .jira-column .form-group {
-  background: #fafbfc;
-  padding: 20px;
-  border-radius: 8px;
-  border: 1px solid #e1e8ed;
-  transition: all 0.3s;
+  background: transparent; /* remove box background */
+  padding: 0 0 20px 0; /* keep vertical rhythm without box */
+  border-radius: 0;
+  border: none; /* remove box border */
+  transition: none;
   margin-bottom: 20px;
 }
 
 .jira-column .form-group:hover {
-  border-color: #3498db;
-  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.1);
+  border-color: transparent; /* no hover box */
+  box-shadow: none;
+  background: transparent;
 }
 
 .jira-column .form-group:focus-within {
-  border-color: #3498db;
-  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.15);
-  background: white;
+  border-color: transparent; /* no focus box */
+  box-shadow: none;
+  background: transparent;
 }
 
 /* Story Key Container Enhancement */

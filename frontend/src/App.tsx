@@ -351,9 +351,7 @@ function App() {
                 aria-label={navCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
                 title={navCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
               >
-                <span className="bar"></span>
-                <span className="bar"></span>
-                <span className="bar"></span>
+                <span className="collapse-icon" aria-hidden="true">{navCollapsed ? '»' : '«'}</span>
               </button>
             <button
               className={`nav-button ${activeTab === 'manual' ? 'active' : ''}`}
@@ -367,11 +365,16 @@ function App() {
             <button
               className={`nav-button ${activeTab === 'jira' ? 'active' : ''}`}
               onClick={() => setActiveTab('jira')}
-              aria-label="Generate from Jira"
-              title="TC generation from Jira"
+              aria-label="Jira TC generation"
+              title="Jira TC generation"
             >
-              <span className="nav-icon">🗂️</span>
-              <span className="nav-text">TC generation from Jira</span>
+              <span className="nav-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" role="img">
+                  <polygon points="12,2 22,12 12,22 2,12" fill="#2684FF"/>
+                  <polygon points="12,5.5 18.5,12 12,18.5 5.5,12" fill="#79A6FF"/>
+                </svg>
+              </span>
+              <span className="nav-text">Jira TC generation</span>
             </button>
             <button
               className={`nav-button ${activeTab === 'code' ? 'active' : ''}`}
