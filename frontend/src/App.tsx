@@ -509,7 +509,7 @@ function App() {
                 <div className="jira-column jira-column-left">
                   <div className="form-group">
                     <label htmlFor="storyKey" className="form-label">
-                      <span className="label-icon">🔑</span> Story Key *
+                      Story Key *
                     </label>
                     <div className="story-key-container">
                       <input
@@ -534,7 +534,7 @@ function App() {
 
                   <div className="form-group">
                     <label htmlFor="jiraDescription" className="form-label">
-                      <span className="label-icon">📝</span> Description
+                      Description
                     </label>
                     <textarea
                       id="jiraDescription"
@@ -548,7 +548,7 @@ function App() {
 
                   <div className="form-group">
                     <label htmlFor="jiraAdditionalInfo" className="form-label">
-                      <span className="label-icon">💡</span> Additional Inputs
+                      Additional Inputs
                     </label>
                     <textarea
                       id="jiraAdditionalInfo"
@@ -564,7 +564,7 @@ function App() {
                 <div className="jira-column jira-column-right">
                   <div className="form-group">
                     <label htmlFor="jiraTitle" className="form-label">
-                      <span className="label-icon">📌</span> Title *
+                      Title *
                     </label>
                     <input
                       type="text"
@@ -580,7 +580,7 @@ function App() {
 
                   <div className="form-group">
                     <label htmlFor="jiraAcceptanceCriteria" className="form-label">
-                      <span className="label-icon">✅</span> Acceptance Criteria *
+                      Acceptance Criteria *
                     </label>
                     <textarea
                       id="jiraAcceptanceCriteria"
